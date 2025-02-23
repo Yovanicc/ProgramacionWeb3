@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grid con Css</title>
+</head>
+<style>
+    .grid-container {
+        display: grid; /* Activa CSS Grid */
+        grid-template-areas: 
+            "header header"    /* Primera fila: Encabezado ocupa 2 columnas */
+            "sidebar content"  /* Segunda fila: Sidebar a la izquierda, contenido a la derecha */
+            "footer footer";   /* Tercera fila: Pie de página ocupa 2 columnas */
+
+         /* Define el ancho de las columnas */
+    grid-template-columns: 1fr 3fr; /* Sidebar = 1 parte, Contenido = 3 partes */
+        grid-template-rows: auto 1fr auto;
+        height: 100vh;
+    }
+    header { grid-area: header; background: #333; color: white; text-align: center; padding: 20px; }
+    .sidebar { grid-area: sidebar; background: #ddd; padding: 20px; }
+    .content { grid-area: content; background: #f4f4f4; padding: 20px; }
+    footer { grid-area: footer; background: #333; color: #ffffff; text-align: center; padding: 20px; }
+</style>
+</head>
+<body>
+<div class="grid-container">
+    <header>Encabezado</header>
+    <div class="sidebar">Barra lateral</div>
+    <div class="content">Contenido principal</div>
+    <footer>Pie de página</footer>
+</div>
+</body>
+</html>
