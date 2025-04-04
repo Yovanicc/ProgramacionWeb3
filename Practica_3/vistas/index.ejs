@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Productos</title>
+    <link rel="stylesheet" href="/public/estilos.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="text-center">Gestión de Productos</h1>
+
+        <!-- Formulario para agregar un nuevo producto -->
+        <div class="card p-3 mb-4">
+            <h3 class="text-center">Agregar Producto</h3>
+            <form action="/guardar" method="POST" class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">Nombre:</label>
+                    <input type="text" name="nombre" class="form-control" required>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Precio:</label>
+                    <input type="number" name="precio" step="0.01" class="form-control" required>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Stock:</label>
+                    <input type="number" name="stock" class="form-control" required>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Categoría:</label>
+                    <input type="text" name="categoria" class="form-control" required>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Proveedor:</label>
+                    <input type="text" name="proveedor" class="form-control" required>
+                </div>
+                <div class="col-12 text-center">
+                    <button type="submit" class="btn btn-primary">Agregar Producto</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Tabla de productos -->
+        <div class="card p-3">
+            <h3 class="text-center">Lista de Productos</h3>
+            <table class="table table-striped table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Precio</th>
+                        <th>Stock</th>
+                        <th>Categoría</th>
+                        <th>Proveedor</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% productos.forEach(producto => { %>
+                        <tr>
+                            <td><%= producto.id %></td>
+                            <td><%= producto.nombre %></td>
+                            <td>$<%= producto.precio %></td>
+                            <td><%= producto.stock %></td>
+                            <td><%= producto.categoria %></td>
+                            <td><%= producto.proveedor %></td>
+                            <td>
+                                <button type="button" class="btn btn-warning btn-sm" onclick="abrirModal('<%= producto.id %>', '<%= producto.nombre %>', '<%= producto.precio %>', '<%= producto.stock %>', '<%= producto.categoria %>', '<%= producto.proveedor %>')">Editar</button>
+                                <a href="/eliminar/<%= producto.id %>" class="btn btn-danger btn-sm">Eliminar</a>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal para Editar Producto -->
+    <div class="modal fade" id="editarModal" tabindex="-1" aria-labelledby="editarModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editarModalLabel">Editar Producto</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="editarForm" method="POST">
+              <input type="hidden" name="id" id="editarId">
+              <div class="mb-3">
+                <label class="form-label">Nombre:</label>
+                <input type="text" name="nombre" id="editarNombre" class="form-control" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Precio:</label>
+                <input type="number" name="precio" id="editarPrecio" step="0.01" class="form-control" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Stock:</label>
+                <input type="number" name="stock" id="editarStock" class="form-control" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Categoría:</label>
+                <input type="text" name="categoria" id="editarCategoria" class="form-control" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Proveedor:</label>
+                <input type="text" name="proveedor" id="editarProveedor" class="form-control" required>
+              </div>
+              <div class="text-center">
+                <button type="submit" class="btn btn-success">Guardar Cambios</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+    function abrirModal(id, nombre, precio, stock, categoria, proveedor) {
+        document.getElementById('editarId').value = id;
+        document.getElementById('editarNombre').value = nombre;
+        document.getElementById('editarPrecio').value = precio;
+        document.getElementById('editarStock').value = stock;
+        document.getElementById('editarCategoria').value = categoria;
+        document.getElementById('editarProveedor').value = proveedor;
+        document.getElementById('editarForm').action = `/editar/${id}`;
+        var modal = new bootstrap.Modal(document.getElementById('editarModal'));
+        modal.show();
+    }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
